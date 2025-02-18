@@ -1,23 +1,25 @@
 import express from "express";
 import DatabaseConnection from "./database/db.js";
-import 'dotenv/config';
+import "dotenv/config";
 import Router from "./routes/route.js";
 import cors from "cors";
 
-const app=express();
+const app = express();
 
-const PORT=8000;
+const PORT = 8000;
 
-app.use(cors({ 
-    origin: "http://localhost:5173", 
-}));
+DatabaseConnection(process.env.DB_USERNAME, process.env.DB_PASSWORD);
 
-app.use(express.json())
+app.use(
+  cors({
+    origin: "http://localhost:5173",
+  })
+);
 
-app.use('/',Router);
+app.use(express.json());
 
-app.listen(PORT,()=>{
-    console.log(`Server is listening on Port ${PORT}`);
+app.use("/", Router);
+
+app.listen(PORT, () => {
+  console.log(`Server is listening on Port ${PORT}`);
 });
-
-DatabaseConnection(process.env.DB_USERNAME,process.env.DB_PASSWORD);
