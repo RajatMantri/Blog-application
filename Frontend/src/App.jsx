@@ -11,6 +11,10 @@ import {
 import Header from "./components/Header.jsx";
 import { useState } from "react";
 import { CreatePost } from "./components/create/CreatePost.jsx";
+import DetailView from "./components/posts/DetailView.jsx";
+import { UpdatePost } from "./components/create/UpdatePost.jsx";
+import About from "./components/about/About.jsx";
+import Contact from "./components/contact/Contact.jsx";
 
 // eslint-disable-next-line react/prop-types
 const PrivateRoute = ({ isAuthenticated }) => {
@@ -36,6 +40,19 @@ const App = () => {
               element={<Login setAuthenticated={setUserAuthenticated} />}
             />
             <Route
+              path="/contact"
+              element={<PrivateRoute isAuthenticated={isAuthenticated} />}
+            >
+              <Route path="/contact" element={<Contact />} />
+            </Route>
+            <Route
+              path="/about"
+              element={<PrivateRoute isAuthenticated={isAuthenticated} />}
+            >
+              <Route path="/about" element={<About />} />
+            </Route>
+
+            <Route
               path="/"
               element={<PrivateRoute isAuthenticated={isAuthenticated} />}
             >
@@ -46,6 +63,20 @@ const App = () => {
               element={<PrivateRoute isAuthenticated={isAuthenticated} />}
             >
               <Route path="/create" element={<CreatePost />} />
+            </Route>
+
+            <Route
+              path="/update/:id"
+              element={<PrivateRoute isAuthenticated={isAuthenticated} />}
+            >
+              <Route path="/update/:id" element={<UpdatePost />} />
+            </Route>
+
+            <Route
+              path="/details/:id"
+              element={<PrivateRoute isAuthenticated={isAuthenticated} />}
+            >
+              <Route path="/details/:id" element={<DetailView />} />
             </Route>
           </Routes>
         </div>

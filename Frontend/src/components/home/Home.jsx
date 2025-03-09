@@ -1,4 +1,5 @@
 import Banner from "../home/Banner";
+import Posts from "../posts/Posts";
 import Categories from "./Category";
 import { Grid2 } from "@mui/material";
 
@@ -11,7 +12,7 @@ const Home = () => {
           <Categories />
         </Grid2>
         <Grid2 container item xs={12} sm={10} lg={10}>
-          Posts
+          <Posts />
         </Grid2>
       </Grid2>
     </>

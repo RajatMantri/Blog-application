@@ -64,8 +64,7 @@ const emptyUser_Login = {
 // eslint-disable-next-line react/prop-types
 const Login = ({ setAuthenticated }) => {
   const [page, togglePage] = useState(true);
-  const imageURL =
-    "https://www.sesta.it/wp-content/uploads/2021/03/logo-blog-sesta-trasparente.png";
+  const imageURL = "login.png";
   const [signUpUser, setSignUpUser] = useState(emptyUser_SignUp);
   const [loginUser, setLoginUser] = useState(emptyUser_Login);
   const [error, setError] = useState("");

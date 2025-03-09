@@ -2,10 +2,9 @@ import Box from "@mui/material/Box";
 import { Button, FormControl, styled } from "@mui/material";
 import AddIcon from "@mui/icons-material/Add";
 import { InputBase, TextareaAutosize } from "@mui/material";
-import { useState, useEffect, useContext } from "react";
-import { useNavigate, useSearchParams } from "react-router-dom";
-import { DataContext } from "../../context/DataProvider";
-import { UploadApi, SavePostApi } from "../../service/api.js";
+import { useState, useEffect } from "react";
+import { useNavigate, useParams } from "react-router-dom";
+import { UploadApi, getPostById, updatePost } from "../../service/api.js";
 
 const Container = styled(Box)(({ theme }) => ({
   margin: "50px 100px",
@@ -48,24 +47,27 @@ const initialPost = {
   createdDate: new Date(),
 };
 
-export const CreatePost = () => {
+export const UpdatePost = () => {
   const [post, setPost] = useState(initialPost);
   const [file, setFile] = useState("");
-  const [searchParams] = useSearchParams();
-  const { account } = useContext(DataContext);
   const nav = useNavigate();
   const handleInput = (e) => {
     const { name, value } = e.target;
     setPost({ ...post, [name]: value });
   };
+  const { id } = useParams();
   const url = post.picture || "/create.jpg";
 
   useEffect(() => {
-    setPost({
-      ...post,
-      username: account.username,
-      categories: searchParams.get("category") || "All",
-    });
+    const fetchData = async () => {
+      try {
+        const res = await getPostById(id);
+        setPost(res.data);
+      } catch (err) {
+        console.log(err);
+      }
+    };
+    fetchData();
   }, []);
 
   useEffect(() => {
@@ -81,10 +83,10 @@ export const CreatePost = () => {
     getImage();
   }, [file]);
 
-  const savePost = async () => {
+  const UpdateBlogPost = async () => {
     try {
-      await SavePostApi(post);
-      nav("/");
+      await updatePost(post, id);
+      nav(`/update/${id}`);
     } catch (err) {
       console.log(err);
     }
@@ -106,10 +108,11 @@ export const CreatePost = () => {
         <InputTextField
           placeholder="Title"
           onChange={handleInput}
+          value={post.title}
           name="title"
         />
-        <Button variant="contained" onClick={savePost}>
-          Publish
+        <Button variant="contained" onClick={UpdateBlogPost}>
+          Update
         </Button>
       </StyledFormControl>
       <Textarea
@@ -117,6 +120,7 @@ export const CreatePost = () => {
         placeholder="Tell your story"
         onChange={handleInput}
         name="description"
+        value={post.description}
       />
     </Container>
   );
